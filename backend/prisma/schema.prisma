@@ -1,0 +1,52 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = "file:./dev.db"
+}
+
+model PrivateService {
+  id              Int      @id @default(autoincrement())
+  orgName         String   @map("org_name")
+  serviceName     String   @map("service_name")
+  startDate       DateTime? @map("start_date")
+  endDate         DateTime? @map("end_date")
+  purpose         String?
+  target          String?
+  content         String?
+  applyMethod     String?  @map("apply_method")
+  documents       String?
+  note            String?
+  lifecycle       String   // Comma separated or handle as list if possible (PostgreSQL can use String[])
+  household       String   // Comma separated
+  topic           String   // Comma separated
+  regionScope     String   @default("전국") @map("region_scope")
+  regionName      String?  @map("region_name")
+  urgencyLevel    Int      @default(2) @map("urgency_level")
+  isActive        Boolean  @default(true) @map("is_active")
+  lastVerified    DateTime? @map("last_verified")
+  createdAt       DateTime @default(now()) @map("created_at")
+  updatedAt       DateTime @updatedAt @map("updated_at")
+
+  @@map("private_services")
+  @@index([regionScope, regionName])
+}
+
+model CaseHistory {
+  id               Int      @id @default(autoincrement())
+  caseCode         String   @map("case_code")
+  conditions       Json     // Client conditions snapshot
+  matchedServices  Json     @map("matched_services")
+  connectedServiceId String? @map("connected_service_id")
+  result           String?
+  memo             String?
+  createdBy        String   @map("created_by")
+  createdAt        DateTime @default(now()) @map("created_at")
+
+  @@map("case_history")
+}
