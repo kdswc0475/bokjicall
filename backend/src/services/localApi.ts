@@ -21,6 +21,7 @@ export async function fetchLocalServices(condition: ClientCondition): Promise<Se
     const response = await axios.get(`${BASE_URL}/getLcWelfareServiceList`, {
       params,
       responseType: 'text',
+      timeout: 8000,
     });
 
     const parsedData = parseXml(response.data);

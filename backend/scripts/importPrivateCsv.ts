@@ -50,9 +50,9 @@ async function importCsv() {
         applyMethod: record['신청방법'] || '',
         documents: record['제출서류'] || '',
         note: record['기타'] || '',
-        lifecycle: record['생애주기'] || '',
-        household: record['가구상황'] || '',
-        topic: record['관심주제'] || '',
+        lifecycle: record['생애주기'] ? record['생애주기'].split(',').map((s: string) => s.trim()) : [],
+        household: record['가구상황'] ? record['가구상황'].split(',').map((s: string) => s.trim()) : [],
+        topic: record['관심주제'] ? record['관심주제'].split(',').map((s: string) => s.trim()) : [],
         regionScope: '전국', // Default for this CSV
         urgencyLevel: 2, // Default
       }

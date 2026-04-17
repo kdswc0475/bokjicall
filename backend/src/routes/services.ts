@@ -1,13 +1,23 @@
+import { Router, Request, Response } from 'express';
 import { fetchCentralServices } from '../services/centralApi';
 import { fetchLocalServices } from '../services/localApi';
 import { queryPrivateServices } from '../services/privateDb';
-import { ClientCondition } from '../types/service';
+import { ClientConditionSchema } from '../schemas/condition';
 
 const router = Router();
 
 router.post('/match', async (req: Request, res: Response) => {
   try {
-    const condition: ClientCondition = req.body;
+    // 6. Input validation using Zod
+    const result = ClientConditionSchema.safeParse(req.body);
+    if (!result.success) {
+      return res.status(400).json({ 
+        error: 'Invalid input parameters', 
+        details: result.error.format() 
+      });
+    }
+
+    const condition = result.data;
 
     const [central, local, privateResults] = await Promise.allSettled([
       fetchCentralServices(condition),

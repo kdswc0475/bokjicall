@@ -2,23 +2,21 @@ import React from 'react';
 import { ServiceCard } from '../ServiceCard/ServiceCard';
 import { Search, Loader2, Info } from 'lucide-react';
 
+import { ResultsState, ServiceResult } from '../../types/service';
+
 interface ResultPanelProps {
-  results: {
-    central: any[];
-    local: any[];
-    private: any[];
-  };
+  results: ResultsState;
   isLoading: boolean;
 }
 
 export const ResultPanel: React.FC<ResultPanelProps> = ({ results, isLoading }) => {
   const totalCount = results.central.length + results.local.length + results.private.length;
   
-  // Sort by urgency level Desc (higher first)
-  const allResults = [
-    ...results.private.map(s => ({ ...s, tier: 'PRIVATE' })),
-    ...results.central.map(s => ({ ...s, tier: 'CENTRAL' })),
-    ...results.local.map(s => ({ ...s, tier: 'LOCAL' })),
+  // Combine all categories into one list and sort by urgency level Desc (higher first)
+  const allResults: ServiceResult[] = [
+    ...results.private,
+    ...results.central,
+    ...results.local,
   ].sort((a, b) => (b.urgencyLevel || 0) - (a.urgencyLevel || 0));
 
   if (isLoading) {

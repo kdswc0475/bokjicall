@@ -55,7 +55,7 @@ export const FilterPanel: React.FC = () => {
                 className="w-full appearance-none bg-slate-50 border border-slate-200 rounded-xl px-4 py-2.5 pr-10 focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 transition-all text-sm disabled:opacity-50"
               >
                 <option value="">시·군·구 선택</option>
-                {condition.sido && (REGIONS as any)[condition.sido]?.map((sigungu: string) => (
+                {condition.sido && REGIONS[condition.sido]?.map((sigungu: string) => (
                   <option key={sigungu} value={sigungu}>{sigungu}</option>
                 ))}
               </select>

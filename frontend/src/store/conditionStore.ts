@@ -1,5 +1,8 @@
 import { create } from 'zustand';
 
+/**
+ * Note: Keep synchronized with backend/src/types/service.ts
+ */
 export interface ClientCondition {
   sido: string;
   sigungu: string;

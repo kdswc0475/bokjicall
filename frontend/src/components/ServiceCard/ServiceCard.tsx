@@ -1,23 +1,11 @@
 import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { ChevronDown, MapPin, Building2, ExternalLink, Info, AlertCircle } from 'lucide-react';
+import { ChevronDown, MapPin, Building2, ExternalLink, Info, AlertCircle, DollarSign, ClipboardList, FileText } from 'lucide-react';
+
+import { ServiceResult } from '../../types/service';
 
 interface ServiceCardProps {
-  service: {
-    id: string;
-    name: string;
-    provider: string;
-    tier: 'CENTRAL' | 'LOCAL' | 'PRIVATE';
-    summary: string;
-    content: string;
-    target: string;
-    applyMethod: string;
-    documents?: string;
-    link?: string;
-    urgencyLevel: number;
-    topics: string[];
-    region: string;
-  };
+  service: ServiceResult;
 }
 
 export const ServiceCard: React.FC<ServiceCardProps> = ({ service }) => {
@@ -120,7 +108,7 @@ export const ServiceCard: React.FC<ServiceCardProps> = ({ service }) => {
                   
                   <div>
                     <h4 className="flex items-center text-xs font-bold text-slate-400 uppercase tracking-widest mb-2">
-                      💰 주요내용
+                      <DollarSign size={14} className="mr-1.5" /> 주요내용
                     </h4>
                     <p className="text-sm text-slate-700 leading-relaxed">
                       {service.content}
@@ -129,12 +117,16 @@ export const ServiceCard: React.FC<ServiceCardProps> = ({ service }) => {
 
                   <div className="grid grid-cols-2 gap-4">
                     <div>
-                      <h4 className="text-[10px] font-bold text-slate-400 uppercase tracking-widest mb-1.5">📋 신청방법</h4>
+                      <h4 className="flex items-center text-[10px] font-bold text-slate-400 uppercase tracking-widest mb-1.5">
+                        <ClipboardList size={12} className="mr-1" /> 신청방법
+                      </h4>
                       <p className="text-xs text-slate-600">{service.applyMethod}</p>
                     </div>
                     {service.documents && (
                       <div>
-                        <h4 className="text-[10px] font-bold text-slate-400 uppercase tracking-widest mb-1.5">📄 제출서류</h4>
+                        <h4 className="flex items-center text-[10px] font-bold text-slate-400 uppercase tracking-widest mb-1.5">
+                          <FileText size={12} className="mr-1" /> 제출서류
+                        </h4>
                         <p className="text-xs text-slate-600">{service.documents}</p>
                       </div>
                     )}

@@ -6,8 +6,8 @@ generator client {
 }
 
 datasource db {
-  provider = "sqlite"
-  url      = "file:./dev.db"
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
 }
 
 model PrivateService {
@@ -22,9 +22,9 @@ model PrivateService {
   applyMethod     String?  @map("apply_method")
   documents       String?
   note            String?
-  lifecycle       String   // Comma separated or handle as list if possible (PostgreSQL can use String[])
-  household       String   // Comma separated
-  topic           String   // Comma separated
+  lifecycle       String[]
+  household       String[]
+  topic           String[]
   regionScope     String   @default("전국") @map("region_scope")
   regionName      String?  @map("region_name")
   urgencyLevel    Int      @default(2) @map("urgency_level")

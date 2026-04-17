@@ -71,7 +71,8 @@ export async function fetchCentralServices(condition: ClientCondition): Promise<
 
     const response = await axios.get(`${BASE_URL}/NationalWelfarelistV001`, {
       params,
-      responseType: 'text', // Public API usually returns XML
+      responseType: 'text',
+      timeout: 8000,
     });
 
     const parsedData = parseXml(response.data);

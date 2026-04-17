@@ -3,17 +3,32 @@ import { FilterPanel } from './components/FilterPanel/FilterPanel';
 import { ResultPanel } from './components/ResultPanel/ResultPanel';
 import { useConditionStore } from './store/conditionStore';
 import axios from 'axios';
-import { ShieldCheck, Database, Bell } from 'lucide-react';
+import { ShieldCheck, Bell } from 'lucide-react';
 
-const API_BASE_URL = 'http://localhost:3001/api/services';
+const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || 'http://localhost:3001/api/services';
+
+import { ServiceResult, ResultsState } from './types/service';
 
 const App: React.FC = () => {
   const { condition } = useConditionStore();
-  const [results, setResults] = useState({ central: [], local: [], private: [] });
+  const [results, setResults] = useState<ResultsState>({ central: [], local: [], private: [] });
   const [isLoading, setIsLoading] = useState(false);
   const [apiStatus, setApiStatus] = useState<'online' | 'offline'>('online');
 
-  const fetchResults = async () => {
+  // 9. Use useCallback to prevent unnecessary re-renders and fix dependency warnings
+  const fetchResults = React.useCallback(async () => {
+    // 10. Guard: Prevent API calls when no filters are selected
+    const hasActiveFilters = 
+      condition.sido || 
+      condition.lifecycle.length > 0 || 
+      condition.household.length > 0 || 
+      condition.conditions.length > 0;
+
+    if (!hasActiveFilters) {
+      setResults({ central: [], local: [], private: [] });
+      return;
+    }
+
     setIsLoading(true);
     try {
       const response = await axios.post(`${API_BASE_URL}/match`, condition);
@@ -25,15 +40,15 @@ const App: React.FC = () => {
     } finally {
       setIsLoading(false);
     }
-  };
+  }, [condition]);
 
   useEffect(() => {
-    // Debounce API calls if needed, but for now simple fetch
+    // Debounce API calls
     const timeout = setTimeout(() => {
       fetchResults();
     }, 500);
     return () => clearTimeout(timeout);
-  }, [condition]);
+  }, [fetchResults]); // 9. Correct dependency
 
   return (
     <div className="flex h-screen bg-slate-50 font-sans selection:bg-blue-100 selection:text-blue-900 overflow-hidden">
