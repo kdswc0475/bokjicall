@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { ChevronDown, MapPin, Building2, ExternalLink, Info, AlertCircle, DollarSign, ClipboardList, FileText } from 'lucide-react';
 
-import { ServiceResult } from '../../types/service';
+import type { ServiceResult } from '../../types/service';
 
 interface ServiceCardProps {
   service: ServiceResult;

@@ -2,7 +2,7 @@ import React from 'react';
 import { ServiceCard } from '../ServiceCard/ServiceCard';
 import { Search, Loader2, Info } from 'lucide-react';
 
-import { ResultsState, ServiceResult } from '../../types/service';
+import type { ResultsState, ServiceResult } from '../../types/service';
 
 interface ResultPanelProps {
   results: ResultsState;
